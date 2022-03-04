@@ -1,0 +1,8 @@
+Select N,
+Case
+    When P is null then 'Root'
+    When N in (Select Distinct P from BST) then 'Inner'
+    Else 'Leaf'
+End
+From BST
+Order by N
