@@ -10,3 +10,22 @@ JOIN Employee e
     ON m.manager_code = e.manager_code
 GROUP BY c.company_code, founder
 ORDER BY c.company_code
+
+
+
+
+
+/*OR*/
+
+
+
+
+
+SELECT DISTINCT c.company_code, founder, COUNT(DISTINCT lm.lead_manager_code), COUNT(DISTINCT sm.senior_manager_code), COUNT(DISTINCT m.manager_code), COUNT(DISTINCT employee_code)
+FROM Company c, Lead_Manager lm, Senior_Manager sm, Manager m, Employee e
+WHERE c.company_code = lm.company_code
+  and lm.lead_manager_code = sm.lead_manager_code
+  and sm.lead_manager_code = m.lead_manager_code
+  and m.manager_code = e.manager_code
+GROUP BY c.company_code, founder
+ORDER BY c.company_code
