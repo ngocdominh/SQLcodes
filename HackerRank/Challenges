@@ -1,0 +1,17 @@
+-- Create a common table expression (CTE)
+WITH CTE_count AS
+(SELECT c.hacker_id, h.name, COUNT(c.challenge_id) num_of_chal
+FROM Challenges c
+LEFT JOIN Hackers h
+    ON c.hacker_id = h.hacker_id
+GROUP BY c.hacker_id, h.name)
+
+-- Select all records from the CTE with the given conditions
+SELECT *
+FROM CTE_count
+WHERE num_of_chal = (SELECT MAX(num_of_chal) FROM CTE_count)
+   OR num_of_chal IN (SELECT num_of_chal
+                       FROM CTE_count
+                       GROUP BY num_of_chal
+                       HAVING COUNT(num_of_chal) = 1)
+ORDER BY num_of_chal desc, hacker_id
