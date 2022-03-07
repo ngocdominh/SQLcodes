@@ -1,0 +1,10 @@
+SELECT a.id, wp.age, a.coins_needed, a.power
+FROM (
+    SELECT id, code, coins_needed, power,
+        ROW_NUMBER() OVER (PARTITION BY code, power ORDER BY coins_needed) rn
+    FROM Wands
+    ) a
+INNER JOIN Wands_Property wp
+    ON a.code = wp.code
+WHERE wp.is_evil = 0 AND a.rn = 1
+ORDER BY a.power desc, wp.age desc
