@@ -1,3 +1,10 @@
 SELECT MAX(salary) as SecondHighestSalary
 FROM Employee
 WHERE salary < (SELECT MAX(salary) FROM Employee)
+
+
+
+** IF THERE IS MORE THAN 1 ROW, THE FOLLOWING CODE ALSO WORKS:
+SELECT salary as SecondHighestSalary
+FROM (SELECT salary, ROW_NUMBER() OVER (ORDER BY salary desc) as rn FROM Employee) a
+WHERE a.rn = 2
